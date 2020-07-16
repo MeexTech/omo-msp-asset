@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package omo.msp.asset;
+option go_package= "proto/asset";
+
+service FavoriteService {
+    rpc AddOne(ReqAssetAdd) returns (ReplyAssetOne) {}
+    rpc GetOne(RequestInfo) returns (ReplyAssetOne) {}
+    rpc RemoveOne(RequestInfo) returns (ReplyAssetOne) {}
+    rpc GetList(ReqAssetList) returns (ReplyAssetList) {}
+    rpc GetByOwner(RequestInfo) returns (ReplyAssetList) {}
+}
+
+enum ResultStatus {
+    Success = 0;
+    MaxLimit = 1;
+    Repeated = 2;
+    NotExisted = 3;
+    DBException = 4;
+    Empty = 5;
+}
+
+enum OwnerType {
+    Single = 0;
+    Collection = 1;
+}
+
+message RequestInfo {
+    string uid = 1;
+    string operator = 4;
+}
+
+message AssetInfo {
+    string uid = 1;
+    string name = 2;
+    string md5 = 3;
+    string format = 4;
+    string version = 5;
+    uint64 size = 6;
+    string language = 7;
+    OwnerType type = 8;
+    string owner = 9;
+    string uuid = 10;
+    int64 created = 11;
+    int64 updated = 12;
+    string creator = 13;
+    string operator = 14;
+}
+
+message ReqAssetAdd {
+    string name = 1;
+    string md5 = 2;
+    string format = 3;
+    string version = 4;
+    uint64 size = 5;
+    string language = 6;
+    string uuid = 7;
+    string owner = 8;
+    OwnerType type = 9;
+    string operator = 10;
+}
+
+message ReplyAssetOne {
+    AssetInfo info = 1;
+    ResultStatus errorCode = 2;
+}
+
+message ReqAssetList {
+    repeated string list = 1;
+}
+
+message ReplyAssetList {
+    string owner = 1;
+    repeated AssetInfo list = 2;
+}
