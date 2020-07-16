@@ -33,15 +33,15 @@ var _ context.Context
 var _ client.Option
 var _ server.Option
 
-// Api Endpoints for FavoriteService service
+// Api Endpoints for AssetService service
 
-func NewFavoriteServiceEndpoints() []*api.Endpoint {
+func NewAssetServiceEndpoints() []*api.Endpoint {
 	return []*api.Endpoint{}
 }
 
-// Client API for FavoriteService service
+// Client API for AssetService service
 
-type FavoriteService interface {
+type AssetService interface {
 	AddOne(ctx context.Context, in *ReqAssetAdd, opts ...client.CallOption) (*ReplyAssetOne, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetOne, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetOne, error)
@@ -49,20 +49,20 @@ type FavoriteService interface {
 	GetByOwner(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetList, error)
 }
 
-type favoriteService struct {
+type assetService struct {
 	c    client.Client
 	name string
 }
 
-func NewFavoriteService(name string, c client.Client) FavoriteService {
-	return &favoriteService{
+func NewAssetService(name string, c client.Client) AssetService {
+	return &assetService{
 		c:    c,
 		name: name,
 	}
 }
 
-func (c *favoriteService) AddOne(ctx context.Context, in *ReqAssetAdd, opts ...client.CallOption) (*ReplyAssetOne, error) {
-	req := c.c.NewRequest(c.name, "FavoriteService.AddOne", in)
+func (c *assetService) AddOne(ctx context.Context, in *ReqAssetAdd, opts ...client.CallOption) (*ReplyAssetOne, error) {
+	req := c.c.NewRequest(c.name, "AssetService.AddOne", in)
 	out := new(ReplyAssetOne)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -71,8 +71,8 @@ func (c *favoriteService) AddOne(ctx context.Context, in *ReqAssetAdd, opts ...c
 	return out, nil
 }
 
-func (c *favoriteService) GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetOne, error) {
-	req := c.c.NewRequest(c.name, "FavoriteService.GetOne", in)
+func (c *assetService) GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetOne, error) {
+	req := c.c.NewRequest(c.name, "AssetService.GetOne", in)
 	out := new(ReplyAssetOne)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -81,8 +81,8 @@ func (c *favoriteService) GetOne(ctx context.Context, in *RequestInfo, opts ...c
 	return out, nil
 }
 
-func (c *favoriteService) RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetOne, error) {
-	req := c.c.NewRequest(c.name, "FavoriteService.RemoveOne", in)
+func (c *assetService) RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetOne, error) {
+	req := c.c.NewRequest(c.name, "AssetService.RemoveOne", in)
 	out := new(ReplyAssetOne)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -91,8 +91,8 @@ func (c *favoriteService) RemoveOne(ctx context.Context, in *RequestInfo, opts .
 	return out, nil
 }
 
-func (c *favoriteService) GetList(ctx context.Context, in *ReqAssetList, opts ...client.CallOption) (*ReplyAssetList, error) {
-	req := c.c.NewRequest(c.name, "FavoriteService.GetList", in)
+func (c *assetService) GetList(ctx context.Context, in *ReqAssetList, opts ...client.CallOption) (*ReplyAssetList, error) {
+	req := c.c.NewRequest(c.name, "AssetService.GetList", in)
 	out := new(ReplyAssetList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -101,8 +101,8 @@ func (c *favoriteService) GetList(ctx context.Context, in *ReqAssetList, opts ..
 	return out, nil
 }
 
-func (c *favoriteService) GetByOwner(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetList, error) {
-	req := c.c.NewRequest(c.name, "FavoriteService.GetByOwner", in)
+func (c *assetService) GetByOwner(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetList, error) {
+	req := c.c.NewRequest(c.name, "AssetService.GetByOwner", in)
 	out := new(ReplyAssetList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -111,9 +111,9 @@ func (c *favoriteService) GetByOwner(ctx context.Context, in *RequestInfo, opts 
 	return out, nil
 }
 
-// Server API for FavoriteService service
+// Server API for AssetService service
 
-type FavoriteServiceHandler interface {
+type AssetServiceHandler interface {
 	AddOne(context.Context, *ReqAssetAdd, *ReplyAssetOne) error
 	GetOne(context.Context, *RequestInfo, *ReplyAssetOne) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyAssetOne) error
@@ -121,41 +121,41 @@ type FavoriteServiceHandler interface {
 	GetByOwner(context.Context, *RequestInfo, *ReplyAssetList) error
 }
 
-func RegisterFavoriteServiceHandler(s server.Server, hdlr FavoriteServiceHandler, opts ...server.HandlerOption) error {
-	type favoriteService interface {
+func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts ...server.HandlerOption) error {
+	type assetService interface {
 		AddOne(ctx context.Context, in *ReqAssetAdd, out *ReplyAssetOne) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplyAssetOne) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyAssetOne) error
 		GetList(ctx context.Context, in *ReqAssetList, out *ReplyAssetList) error
 		GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyAssetList) error
 	}
-	type FavoriteService struct {
-		favoriteService
+	type AssetService struct {
+		assetService
 	}
-	h := &favoriteServiceHandler{hdlr}
-	return s.Handle(s.NewHandler(&FavoriteService{h}, opts...))
+	h := &assetServiceHandler{hdlr}
+	return s.Handle(s.NewHandler(&AssetService{h}, opts...))
 }
 
-type favoriteServiceHandler struct {
-	FavoriteServiceHandler
+type assetServiceHandler struct {
+	AssetServiceHandler
 }
 
-func (h *favoriteServiceHandler) AddOne(ctx context.Context, in *ReqAssetAdd, out *ReplyAssetOne) error {
-	return h.FavoriteServiceHandler.AddOne(ctx, in, out)
+func (h *assetServiceHandler) AddOne(ctx context.Context, in *ReqAssetAdd, out *ReplyAssetOne) error {
+	return h.AssetServiceHandler.AddOne(ctx, in, out)
 }
 
-func (h *favoriteServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out *ReplyAssetOne) error {
-	return h.FavoriteServiceHandler.GetOne(ctx, in, out)
+func (h *assetServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out *ReplyAssetOne) error {
+	return h.AssetServiceHandler.GetOne(ctx, in, out)
 }
 
-func (h *favoriteServiceHandler) RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyAssetOne) error {
-	return h.FavoriteServiceHandler.RemoveOne(ctx, in, out)
+func (h *assetServiceHandler) RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyAssetOne) error {
+	return h.AssetServiceHandler.RemoveOne(ctx, in, out)
 }
 
-func (h *favoriteServiceHandler) GetList(ctx context.Context, in *ReqAssetList, out *ReplyAssetList) error {
-	return h.FavoriteServiceHandler.GetList(ctx, in, out)
+func (h *assetServiceHandler) GetList(ctx context.Context, in *ReqAssetList, out *ReplyAssetList) error {
+	return h.AssetServiceHandler.GetList(ctx, in, out)
 }
 
-func (h *favoriteServiceHandler) GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyAssetList) error {
-	return h.FavoriteServiceHandler.GetByOwner(ctx, in, out)
+func (h *assetServiceHandler) GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyAssetList) error {
+	return h.AssetServiceHandler.GetByOwner(ctx, in, out)
 }

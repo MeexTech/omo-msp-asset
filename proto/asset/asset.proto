@@ -3,7 +3,7 @@ syntax = "proto3";
 package omo.msp.asset;
 option go_package= "proto/asset";
 
-service FavoriteService {
+service AssetService {
     rpc AddOne(ReqAssetAdd) returns (ReplyAssetOne) {}
     rpc GetOne(RequestInfo) returns (ReplyAssetOne) {}
     rpc RemoveOne(RequestInfo) returns (ReplyAssetOne) {}
