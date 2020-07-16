@@ -27,7 +27,8 @@ enum OwnerType {
 
 message RequestInfo {
     string uid = 1;
-    string operator = 4;
+    string owner = 2;
+    string operator = 3;
 }
 
 message AssetInfo {
