@@ -36,9 +36,11 @@ var _ server.Option
 type AssetService interface {
 	AddOne(ctx context.Context, in *ReqAssetAdd, opts ...client.CallOption) (*ReplyAssetOne, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetOne, error)
-	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetOne, error)
+	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	GetList(ctx context.Context, in *ReqAssetList, opts ...client.CallOption) (*ReplyAssetList, error)
 	GetByOwner(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetList, error)
+	UpdateThumbs(ctx context.Context, in *ReqAssetThumbs, opts ...client.CallOption) (*ReplyInfo, error)
+	UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, opts ...client.CallOption) (*ReplyInfo, error)
 }
 
 type assetService struct {
@@ -73,9 +75,9 @@ func (c *assetService) GetOne(ctx context.Context, in *RequestInfo, opts ...clie
 	return out, nil
 }
 
-func (c *assetService) RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetOne, error) {
+func (c *assetService) RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error) {
 	req := c.c.NewRequest(c.name, "AssetService.RemoveOne", in)
-	out := new(ReplyAssetOne)
+	out := new(ReplyInfo)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -103,23 +105,47 @@ func (c *assetService) GetByOwner(ctx context.Context, in *RequestInfo, opts ...
 	return out, nil
 }
 
+func (c *assetService) UpdateThumbs(ctx context.Context, in *ReqAssetThumbs, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "AssetService.UpdateThumbs", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *assetService) UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "AssetService.UpdateSnapshot", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for AssetService service
 
 type AssetServiceHandler interface {
 	AddOne(context.Context, *ReqAssetAdd, *ReplyAssetOne) error
 	GetOne(context.Context, *RequestInfo, *ReplyAssetOne) error
-	RemoveOne(context.Context, *RequestInfo, *ReplyAssetOne) error
+	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	GetList(context.Context, *ReqAssetList, *ReplyAssetList) error
 	GetByOwner(context.Context, *RequestInfo, *ReplyAssetList) error
+	UpdateThumbs(context.Context, *ReqAssetThumbs, *ReplyInfo) error
+	UpdateSnapshot(context.Context, *ReqAssetSnapshot, *ReplyInfo) error
 }
 
 func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts ...server.HandlerOption) error {
 	type assetService interface {
 		AddOne(ctx context.Context, in *ReqAssetAdd, out *ReplyAssetOne) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplyAssetOne) error
-		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyAssetOne) error
+		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		GetList(ctx context.Context, in *ReqAssetList, out *ReplyAssetList) error
 		GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyAssetList) error
+		UpdateThumbs(ctx context.Context, in *ReqAssetThumbs, out *ReplyInfo) error
+		UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, out *ReplyInfo) error
 	}
 	type AssetService struct {
 		assetService
@@ -140,7 +166,7 @@ func (h *assetServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out *
 	return h.AssetServiceHandler.GetOne(ctx, in, out)
 }
 
-func (h *assetServiceHandler) RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyAssetOne) error {
+func (h *assetServiceHandler) RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error {
 	return h.AssetServiceHandler.RemoveOne(ctx, in, out)
 }
 
@@ -150,4 +176,12 @@ func (h *assetServiceHandler) GetList(ctx context.Context, in *ReqAssetList, out
 
 func (h *assetServiceHandler) GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyAssetList) error {
 	return h.AssetServiceHandler.GetByOwner(ctx, in, out)
+}
+
+func (h *assetServiceHandler) UpdateThumbs(ctx context.Context, in *ReqAssetThumbs, out *ReplyInfo) error {
+	return h.AssetServiceHandler.UpdateThumbs(ctx, in, out)
+}
+
+func (h *assetServiceHandler) UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, out *ReplyInfo) error {
+	return h.AssetServiceHandler.UpdateSnapshot(ctx, in, out)
 }

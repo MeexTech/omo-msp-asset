@@ -6,9 +6,11 @@ option go_package= "proto/asset";
 service AssetService {
     rpc AddOne(ReqAssetAdd) returns (ReplyAssetOne) {}
     rpc GetOne(RequestInfo) returns (ReplyAssetOne) {}
-    rpc RemoveOne(RequestInfo) returns (ReplyAssetOne) {}
+    rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
     rpc GetList(ReqAssetList) returns (ReplyAssetList) {}
     rpc GetByOwner(RequestInfo) returns (ReplyAssetList) {}
+    rpc UpdateThumbs(ReqAssetThumbs) returns (ReplyInfo){}
+    rpc UpdateSnapshot(ReqAssetSnapshot) returns (ReplyInfo){}
 }
 
 enum ResultStatus {
@@ -57,6 +59,11 @@ message ReplyStatus {
     string error = 2;
 }
 
+message ReplyInfo {
+    string uid = 1;
+    ReplyStatus status = 2;
+}
+
 message ReqAssetAdd {
     string name = 1;
     string md5 = 2;
@@ -72,6 +79,16 @@ message ReqAssetAdd {
     uint32 height = 12;
     string snapshot = 13;
     repeated string thumbs = 14;
+}
+
+message ReqAssetSnapshot{
+    string uid = 1;
+    string snapshot = 2;
+}
+
+message ReqAssetThumbs{
+    string uid = 1;
+    repeated string thumbs = 2;
 }
 
 message ReplyAssetOne {
