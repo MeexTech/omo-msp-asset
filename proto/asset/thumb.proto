@@ -17,7 +17,7 @@ message ThumbInfo {
   string uid = 1;
   string owner = 2;
   string face = 3;
-  uint64 probably = 4;
+  float probably = 4;
   string asset = 5;
   string url = 6;
   int64 created = 7;
@@ -39,7 +39,8 @@ message ReqThumbUpdate{
   string uid = 1;
   string owner = 2;
   float probably = 3;
-  string operator = 4;
+  string asset = 4;
+  string operator = 5;
 }
 
 message ReplyThumbOne {
@@ -48,7 +49,8 @@ message ReplyThumbOne {
 }
 
 message ReqThumbList {
-  repeated string list = 1;
+  string asset = 1;
+  repeated string list = 2;
 }
 
 message ReplyThumbList {

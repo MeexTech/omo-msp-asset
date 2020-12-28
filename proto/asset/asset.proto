@@ -36,7 +36,15 @@ message AssetInfo {
     uint32 width = 15;
     uint32 height = 16;
     string snapshot = 17;
-    repeated string thumbs = 18;
+    repeated ThumbBrief thumbs = 18;
+}
+
+message ThumbBrief {
+    string uid = 1;
+    string owner = 2;
+    string face = 3;
+    uint64 probably = 4;
+    string url = 6;
 }
 
 message ReqAssetAdd {
