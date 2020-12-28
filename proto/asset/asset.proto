@@ -43,7 +43,7 @@ message ThumbBrief {
     string uid = 1;
     string owner = 2;
     string face = 3;
-    uint64 probably = 4;
+    float probably = 4;
     string url = 6;
 }
 
