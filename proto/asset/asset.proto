@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package omo.msp.asset;
 option go_package= "proto/asset";
+import "proto/asset/common.proto";
 
 service AssetService {
     rpc AddOne(ReqAssetAdd) returns (ReplyAssetOne) {}
@@ -9,28 +10,12 @@ service AssetService {
     rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
     rpc GetList(ReqAssetList) returns (ReplyAssetList) {}
     rpc GetByOwner(RequestInfo) returns (ReplyAssetList) {}
-    rpc UpdateThumbs(ReqAssetThumbs) returns (ReplyInfo){}
     rpc UpdateSnapshot(ReqAssetSnapshot) returns (ReplyInfo){}
-}
-
-enum ResultStatus {
-    Success = 0;
-    MaxLimit = 1;
-    Repeated = 2;
-    NotExisted = 3;
-    DBException = 4;
-    Empty = 5;
 }
 
 enum OwnerType {
     Single = 0;
     Group = 1;
-}
-
-message RequestInfo {
-    string uid = 1;
-    string owner = 2;
-    string operator = 3;
 }
 
 message AssetInfo {
@@ -54,16 +39,6 @@ message AssetInfo {
     repeated string thumbs = 18;
 }
 
-message ReplyStatus {
-    uint32 code = 1;
-    string error = 2;
-}
-
-message ReplyInfo {
-    string uid = 1;
-    ReplyStatus status = 2;
-}
-
 message ReqAssetAdd {
     string name = 1;
     string md5 = 2;
@@ -84,11 +59,7 @@ message ReqAssetAdd {
 message ReqAssetSnapshot{
     string uid = 1;
     string snapshot = 2;
-}
-
-message ReqAssetThumbs{
-    string uid = 1;
-    repeated string thumbs = 2;
+    string operator = 3;
 }
 
 message ReplyAssetOne {

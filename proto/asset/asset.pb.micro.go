@@ -39,7 +39,6 @@ type AssetService interface {
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	GetList(ctx context.Context, in *ReqAssetList, opts ...client.CallOption) (*ReplyAssetList, error)
 	GetByOwner(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetList, error)
-	UpdateThumbs(ctx context.Context, in *ReqAssetThumbs, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, opts ...client.CallOption) (*ReplyInfo, error)
 }
 
@@ -105,16 +104,6 @@ func (c *assetService) GetByOwner(ctx context.Context, in *RequestInfo, opts ...
 	return out, nil
 }
 
-func (c *assetService) UpdateThumbs(ctx context.Context, in *ReqAssetThumbs, opts ...client.CallOption) (*ReplyInfo, error) {
-	req := c.c.NewRequest(c.name, "AssetService.UpdateThumbs", in)
-	out := new(ReplyInfo)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *assetService) UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, opts ...client.CallOption) (*ReplyInfo, error) {
 	req := c.c.NewRequest(c.name, "AssetService.UpdateSnapshot", in)
 	out := new(ReplyInfo)
@@ -133,7 +122,6 @@ type AssetServiceHandler interface {
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	GetList(context.Context, *ReqAssetList, *ReplyAssetList) error
 	GetByOwner(context.Context, *RequestInfo, *ReplyAssetList) error
-	UpdateThumbs(context.Context, *ReqAssetThumbs, *ReplyInfo) error
 	UpdateSnapshot(context.Context, *ReqAssetSnapshot, *ReplyInfo) error
 }
 
@@ -144,7 +132,6 @@ func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		GetList(ctx context.Context, in *ReqAssetList, out *ReplyAssetList) error
 		GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyAssetList) error
-		UpdateThumbs(ctx context.Context, in *ReqAssetThumbs, out *ReplyInfo) error
 		UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, out *ReplyInfo) error
 	}
 	type AssetService struct {
@@ -176,10 +163,6 @@ func (h *assetServiceHandler) GetList(ctx context.Context, in *ReqAssetList, out
 
 func (h *assetServiceHandler) GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyAssetList) error {
 	return h.AssetServiceHandler.GetByOwner(ctx, in, out)
-}
-
-func (h *assetServiceHandler) UpdateThumbs(ctx context.Context, in *ReqAssetThumbs, out *ReplyInfo) error {
-	return h.AssetServiceHandler.UpdateThumbs(ctx, in, out)
 }
 
 func (h *assetServiceHandler) UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, out *ReplyInfo) error {

@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package omo.msp.asset;
+option go_package= "proto/asset";
+import "proto/asset/common.proto";
+
+service ThumbService {
+  rpc AddOne(ReqThumbAdd) returns (ReplyThumbOne) {}
+  rpc GetOne(RequestInfo) returns (ReplyThumbOne) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+  rpc GetList(ReqThumbList) returns (ReplyThumbList) {}
+  rpc GetByOwner(RequestInfo) returns (ReplyThumbList) {}
+  rpc UpdateBase(ReqThumbUpdate) returns (ReplyThumbOne) {}
+}
+
+message ThumbInfo {
+  string uid = 1;
+  string owner = 2;
+  string face = 3;
+  uint64 probably = 4;
+  string asset = 5;
+  string url = 6;
+  int64 created = 7;
+  int64 updated = 8;
+  string creator = 9;
+  string operator = 10;
+}
+
+message ReqThumbAdd {
+  string owner = 1;
+  string face = 2;
+  string asset = 3;
+  string url = 4;
+  float probably = 5;
+  string operator = 6;
+}
+
+message ReqThumbUpdate{
+  string uid = 1;
+  string owner = 2;
+  float probably = 3;
+  string operator = 4;
+}
+
+message ReplyThumbOne {
+  ThumbInfo info = 1;
+  ReplyStatus status = 2;
+}
+
+message ReqThumbList {
+  repeated string list = 1;
+}
+
+message ReplyThumbList {
+  string owner = 1;
+  repeated ThumbInfo list = 2;
+  ReplyStatus status = 3;
+}
