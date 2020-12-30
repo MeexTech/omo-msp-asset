@@ -39,7 +39,8 @@ type AssetService interface {
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	GetList(ctx context.Context, in *ReqAssetList, opts ...client.CallOption) (*ReplyAssetList, error)
 	GetByOwner(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetList, error)
-	UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, opts ...client.CallOption) (*ReplyInfo, error)
+	UpdateSnapshot(ctx context.Context, in *ReqAssetFlag, opts ...client.CallOption) (*ReplyInfo, error)
+	UpdateSmall(ctx context.Context, in *ReqAssetFlag, opts ...client.CallOption) (*ReplyInfo, error)
 }
 
 type assetService struct {
@@ -104,8 +105,18 @@ func (c *assetService) GetByOwner(ctx context.Context, in *RequestInfo, opts ...
 	return out, nil
 }
 
-func (c *assetService) UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, opts ...client.CallOption) (*ReplyInfo, error) {
+func (c *assetService) UpdateSnapshot(ctx context.Context, in *ReqAssetFlag, opts ...client.CallOption) (*ReplyInfo, error) {
 	req := c.c.NewRequest(c.name, "AssetService.UpdateSnapshot", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *assetService) UpdateSmall(ctx context.Context, in *ReqAssetFlag, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "AssetService.UpdateSmall", in)
 	out := new(ReplyInfo)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -122,7 +133,8 @@ type AssetServiceHandler interface {
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	GetList(context.Context, *ReqAssetList, *ReplyAssetList) error
 	GetByOwner(context.Context, *RequestInfo, *ReplyAssetList) error
-	UpdateSnapshot(context.Context, *ReqAssetSnapshot, *ReplyInfo) error
+	UpdateSnapshot(context.Context, *ReqAssetFlag, *ReplyInfo) error
+	UpdateSmall(context.Context, *ReqAssetFlag, *ReplyInfo) error
 }
 
 func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts ...server.HandlerOption) error {
@@ -132,7 +144,8 @@ func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		GetList(ctx context.Context, in *ReqAssetList, out *ReplyAssetList) error
 		GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyAssetList) error
-		UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, out *ReplyInfo) error
+		UpdateSnapshot(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error
+		UpdateSmall(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error
 	}
 	type AssetService struct {
 		assetService
@@ -165,6 +178,10 @@ func (h *assetServiceHandler) GetByOwner(ctx context.Context, in *RequestInfo, o
 	return h.AssetServiceHandler.GetByOwner(ctx, in, out)
 }
 
-func (h *assetServiceHandler) UpdateSnapshot(ctx context.Context, in *ReqAssetSnapshot, out *ReplyInfo) error {
+func (h *assetServiceHandler) UpdateSnapshot(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error {
 	return h.AssetServiceHandler.UpdateSnapshot(ctx, in, out)
+}
+
+func (h *assetServiceHandler) UpdateSmall(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error {
+	return h.AssetServiceHandler.UpdateSmall(ctx, in, out)
 }
