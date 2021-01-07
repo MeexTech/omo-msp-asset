@@ -24,6 +24,7 @@ message ThumbInfo {
   int64 updated = 8;
   string creator = 9;
   string operator = 10;
+  float similar = 11;
 }
 
 message ReqThumbAdd {
@@ -33,12 +34,13 @@ message ReqThumbAdd {
   string url = 4;
   float probably = 5;
   string operator = 6;
+  float similar = 7;
 }
 
 message ReqThumbUpdate{
   string uid = 1;
   string owner = 2;
-  float probably = 3;
+  float similar = 3;
   string asset = 4;
   string operator = 5;
 }
