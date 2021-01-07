@@ -46,6 +46,7 @@ message ThumbBrief {
     string owner = 2;
     string face = 3;
     float probably = 4;
+    float similar = 5;
     string url = 6;
 }
 
@@ -63,7 +64,8 @@ message ReqAssetAdd {
     uint32 width = 11;
     uint32 height = 12;
     string snapshot = 13;
-    repeated string thumbs = 14;
+    string small = 14;
+    repeated string thumbs = 15;
 }
 
 message ReqAssetFlag{
