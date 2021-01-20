@@ -47,7 +47,8 @@ message ThumbBrief {
     string face = 3;
     float probably = 4;
     float similar = 5;
-    string url = 6;
+    float blur = 6;
+    string url = 7;
 }
 
 message ReqAssetAdd {
