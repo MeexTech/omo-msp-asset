@@ -25,6 +25,7 @@ message ThumbInfo {
   string creator = 9;
   string operator = 10;
   float similar = 11;
+  float blur = 12;
 }
 
 message ReqThumbAdd {
@@ -35,6 +36,7 @@ message ReqThumbAdd {
   float probably = 5;
   string operator = 6;
   float similar = 7;
+  float blur = 8;
 }
 
 message ReqThumbUpdate{
