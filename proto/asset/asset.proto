@@ -12,6 +12,7 @@ service AssetService {
     rpc GetByOwner(RequestInfo) returns (ReplyAssetList) {}
     rpc UpdateSnapshot(ReqAssetFlag) returns (ReplyInfo){}
     rpc UpdateSmall(ReqAssetFlag) returns (ReplyInfo){}
+    rpc GetToken(RequestInfo) returns (ReplyAssetToken){}
 }
 
 enum OwnerType {
@@ -88,4 +89,13 @@ message ReplyAssetList {
     string owner = 1;
     repeated AssetInfo list = 2;
     ReplyStatus status = 3;
+}
+
+message ReplyAssetToken {
+    ReplyStatus status = 1;
+    string domain = 2;
+    uint32 limit = 3;
+    uint32 expire = 4;
+    string bucket = 5;
+    string token = 6;
 }
