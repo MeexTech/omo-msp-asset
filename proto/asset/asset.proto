@@ -13,6 +13,7 @@ service AssetService {
     rpc UpdateSnapshot(ReqAssetFlag) returns (ReplyInfo){}
     rpc UpdateSmall(ReqAssetFlag) returns (ReplyInfo){}
     rpc GetToken(RequestInfo) returns (ReplyAssetToken){}
+    rpc UpdateBase(ReqAssetUpdate) returns (ReplyInfo){}
 }
 
 enum OwnerType {
@@ -39,6 +40,7 @@ message AssetInfo {
     uint32 height = 16;
     string snapshot = 17;
     string small = 18;
+    string remark = 20;
     repeated ThumbBrief thumbs = 19;
 }
 
@@ -67,6 +69,7 @@ message ReqAssetAdd {
     uint32 height = 12;
     string snapshot = 13;
     string small = 14;
+    string remark = 16;
     repeated string thumbs = 15;
 }
 
@@ -83,6 +86,12 @@ message ReplyAssetOne {
 
 message ReqAssetList {
     repeated string list = 1;
+}
+
+message ReqAssetUpdate{
+    string uid = 1;
+    string name = 2;
+    string remark = 3;
 }
 
 message ReplyAssetList {

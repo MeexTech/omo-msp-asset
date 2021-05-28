@@ -42,6 +42,7 @@ type AssetService interface {
 	UpdateSnapshot(ctx context.Context, in *ReqAssetFlag, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateSmall(ctx context.Context, in *ReqAssetFlag, opts ...client.CallOption) (*ReplyInfo, error)
 	GetToken(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetToken, error)
+	UpdateBase(ctx context.Context, in *ReqAssetUpdate, opts ...client.CallOption) (*ReplyInfo, error)
 }
 
 type assetService struct {
@@ -136,6 +137,16 @@ func (c *assetService) GetToken(ctx context.Context, in *RequestInfo, opts ...cl
 	return out, nil
 }
 
+func (c *assetService) UpdateBase(ctx context.Context, in *ReqAssetUpdate, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "AssetService.UpdateBase", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for AssetService service
 
 type AssetServiceHandler interface {
@@ -147,6 +158,7 @@ type AssetServiceHandler interface {
 	UpdateSnapshot(context.Context, *ReqAssetFlag, *ReplyInfo) error
 	UpdateSmall(context.Context, *ReqAssetFlag, *ReplyInfo) error
 	GetToken(context.Context, *RequestInfo, *ReplyAssetToken) error
+	UpdateBase(context.Context, *ReqAssetUpdate, *ReplyInfo) error
 }
 
 func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts ...server.HandlerOption) error {
@@ -159,6 +171,7 @@ func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts
 		UpdateSnapshot(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error
 		UpdateSmall(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error
 		GetToken(ctx context.Context, in *RequestInfo, out *ReplyAssetToken) error
+		UpdateBase(ctx context.Context, in *ReqAssetUpdate, out *ReplyInfo) error
 	}
 	type AssetService struct {
 		assetService
@@ -201,4 +214,8 @@ func (h *assetServiceHandler) UpdateSmall(ctx context.Context, in *ReqAssetFlag,
 
 func (h *assetServiceHandler) GetToken(ctx context.Context, in *RequestInfo, out *ReplyAssetToken) error {
 	return h.AssetServiceHandler.GetToken(ctx, in, out)
+}
+
+func (h *assetServiceHandler) UpdateBase(ctx context.Context, in *ReqAssetUpdate, out *ReplyInfo) error {
+	return h.AssetServiceHandler.UpdateBase(ctx, in, out)
 }
