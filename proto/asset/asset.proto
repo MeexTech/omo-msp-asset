@@ -32,7 +32,7 @@ message AssetInfo {
     string language = 7;
     OwnerType type = 8;
     string owner = 9;
-    string uuid = 10;
+    string url = 10;
     int64 created = 11;
     int64 updated = 12;
     string creator = 13;
