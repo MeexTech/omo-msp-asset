@@ -45,6 +45,7 @@ type AssetService interface {
 	UpdateBase(ctx context.Context, in *ReqAssetUpdate, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateMeta(ctx context.Context, in *ReqAssetFlag, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateWeight(ctx context.Context, in *ReqAssetWeight, opts ...client.CallOption) (*ReplyInfo, error)
+	UpdateStatus(ctx context.Context, in *ReqAssetWeight, opts ...client.CallOption) (*ReplyInfo, error)
 }
 
 type assetService struct {
@@ -169,6 +170,16 @@ func (c *assetService) UpdateWeight(ctx context.Context, in *ReqAssetWeight, opt
 	return out, nil
 }
 
+func (c *assetService) UpdateStatus(ctx context.Context, in *ReqAssetWeight, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "AssetService.UpdateStatus", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for AssetService service
 
 type AssetServiceHandler interface {
@@ -183,6 +194,7 @@ type AssetServiceHandler interface {
 	UpdateBase(context.Context, *ReqAssetUpdate, *ReplyInfo) error
 	UpdateMeta(context.Context, *ReqAssetFlag, *ReplyInfo) error
 	UpdateWeight(context.Context, *ReqAssetWeight, *ReplyInfo) error
+	UpdateStatus(context.Context, *ReqAssetWeight, *ReplyInfo) error
 }
 
 func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts ...server.HandlerOption) error {
@@ -198,6 +210,7 @@ func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts
 		UpdateBase(ctx context.Context, in *ReqAssetUpdate, out *ReplyInfo) error
 		UpdateMeta(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error
 		UpdateWeight(ctx context.Context, in *ReqAssetWeight, out *ReplyInfo) error
+		UpdateStatus(ctx context.Context, in *ReqAssetWeight, out *ReplyInfo) error
 	}
 	type AssetService struct {
 		assetService
@@ -252,4 +265,8 @@ func (h *assetServiceHandler) UpdateMeta(ctx context.Context, in *ReqAssetFlag, 
 
 func (h *assetServiceHandler) UpdateWeight(ctx context.Context, in *ReqAssetWeight, out *ReplyInfo) error {
 	return h.AssetServiceHandler.UpdateWeight(ctx, in, out)
+}
+
+func (h *assetServiceHandler) UpdateStatus(ctx context.Context, in *ReqAssetWeight, out *ReplyInfo) error {
+	return h.AssetServiceHandler.UpdateStatus(ctx, in, out)
 }
