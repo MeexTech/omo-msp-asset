@@ -10,6 +10,7 @@ service AssetService {
     rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
     rpc GetList(ReqAssetList) returns (ReplyAssetList) {}
     rpc GetByOwner(RequestInfo) returns (ReplyAssetList) {}
+    rpc GetByFilter(RequestFilter) returns (ReplyAssetList) {}
     rpc UpdateSnapshot(ReqAssetFlag) returns (ReplyInfo){}
     rpc UpdateSmall(ReqAssetFlag) returns (ReplyInfo){}
     rpc GetToken(RequestInfo) returns (ReplyAssetToken){}

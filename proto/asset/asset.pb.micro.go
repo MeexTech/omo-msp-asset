@@ -39,6 +39,7 @@ type AssetService interface {
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	GetList(ctx context.Context, in *ReqAssetList, opts ...client.CallOption) (*ReplyAssetList, error)
 	GetByOwner(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetList, error)
+	GetByFilter(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyAssetList, error)
 	UpdateSnapshot(ctx context.Context, in *ReqAssetFlag, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateSmall(ctx context.Context, in *ReqAssetFlag, opts ...client.CallOption) (*ReplyInfo, error)
 	GetToken(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetToken, error)
@@ -102,6 +103,16 @@ func (c *assetService) GetList(ctx context.Context, in *ReqAssetList, opts ...cl
 
 func (c *assetService) GetByOwner(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyAssetList, error) {
 	req := c.c.NewRequest(c.name, "AssetService.GetByOwner", in)
+	out := new(ReplyAssetList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *assetService) GetByFilter(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyAssetList, error) {
+	req := c.c.NewRequest(c.name, "AssetService.GetByFilter", in)
 	out := new(ReplyAssetList)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -188,6 +199,7 @@ type AssetServiceHandler interface {
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	GetList(context.Context, *ReqAssetList, *ReplyAssetList) error
 	GetByOwner(context.Context, *RequestInfo, *ReplyAssetList) error
+	GetByFilter(context.Context, *RequestFilter, *ReplyAssetList) error
 	UpdateSnapshot(context.Context, *ReqAssetFlag, *ReplyInfo) error
 	UpdateSmall(context.Context, *ReqAssetFlag, *ReplyInfo) error
 	GetToken(context.Context, *RequestInfo, *ReplyAssetToken) error
@@ -204,6 +216,7 @@ func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		GetList(ctx context.Context, in *ReqAssetList, out *ReplyAssetList) error
 		GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyAssetList) error
+		GetByFilter(ctx context.Context, in *RequestFilter, out *ReplyAssetList) error
 		UpdateSnapshot(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error
 		UpdateSmall(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error
 		GetToken(ctx context.Context, in *RequestInfo, out *ReplyAssetToken) error
@@ -241,6 +254,10 @@ func (h *assetServiceHandler) GetList(ctx context.Context, in *ReqAssetList, out
 
 func (h *assetServiceHandler) GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyAssetList) error {
 	return h.AssetServiceHandler.GetByOwner(ctx, in, out)
+}
+
+func (h *assetServiceHandler) GetByFilter(ctx context.Context, in *RequestFilter, out *ReplyAssetList) error {
+	return h.AssetServiceHandler.GetByFilter(ctx, in, out)
 }
 
 func (h *assetServiceHandler) UpdateSnapshot(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error {

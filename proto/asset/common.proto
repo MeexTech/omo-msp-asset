@@ -18,6 +18,14 @@ message RequestInfo {
   string operator = 3;
 }
 
+message RequestFilter {
+  string owner = 1;
+  string key = 2;
+  string value = 3;
+  uint32 page = 4;
+  uint32 number = 5;
+}
+
 message ReplyStatus {
   uint32 code = 1;
   string error = 2;
