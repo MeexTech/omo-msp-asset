@@ -18,6 +18,7 @@ service AssetService {
     rpc UpdateMeta(ReqAssetFlag) returns (ReplyInfo){}
     rpc UpdateWeight(ReqAssetWeight) returns (ReplyInfo){}
     rpc UpdateStatus(ReqAssetWeight) returns (ReplyInfo){}
+    rpc UpdateByFilter(RequestUpdate) returns (ReplyInfo){}
 }
 
 enum OwnerType {

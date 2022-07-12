@@ -35,3 +35,12 @@ message ReplyInfo {
   string uid = 1;
   ReplyStatus status = 2;
 }
+
+message RequestUpdate{
+  string owner = 1;
+  string uid = 2;
+  string field = 3;
+  string value = 4;
+  string operator = 5;
+  repeated string values = 6;
+}

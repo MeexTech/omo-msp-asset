@@ -47,6 +47,7 @@ type AssetService interface {
 	UpdateMeta(ctx context.Context, in *ReqAssetFlag, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateWeight(ctx context.Context, in *ReqAssetWeight, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateStatus(ctx context.Context, in *ReqAssetWeight, opts ...client.CallOption) (*ReplyInfo, error)
+	UpdateByFilter(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error)
 }
 
 type assetService struct {
@@ -191,6 +192,16 @@ func (c *assetService) UpdateStatus(ctx context.Context, in *ReqAssetWeight, opt
 	return out, nil
 }
 
+func (c *assetService) UpdateByFilter(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "AssetService.UpdateByFilter", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for AssetService service
 
 type AssetServiceHandler interface {
@@ -207,6 +218,7 @@ type AssetServiceHandler interface {
 	UpdateMeta(context.Context, *ReqAssetFlag, *ReplyInfo) error
 	UpdateWeight(context.Context, *ReqAssetWeight, *ReplyInfo) error
 	UpdateStatus(context.Context, *ReqAssetWeight, *ReplyInfo) error
+	UpdateByFilter(context.Context, *RequestUpdate, *ReplyInfo) error
 }
 
 func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts ...server.HandlerOption) error {
@@ -224,6 +236,7 @@ func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts
 		UpdateMeta(ctx context.Context, in *ReqAssetFlag, out *ReplyInfo) error
 		UpdateWeight(ctx context.Context, in *ReqAssetWeight, out *ReplyInfo) error
 		UpdateStatus(ctx context.Context, in *ReqAssetWeight, out *ReplyInfo) error
+		UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error
 	}
 	type AssetService struct {
 		assetService
@@ -286,4 +299,8 @@ func (h *assetServiceHandler) UpdateWeight(ctx context.Context, in *ReqAssetWeig
 
 func (h *assetServiceHandler) UpdateStatus(ctx context.Context, in *ReqAssetWeight, out *ReplyInfo) error {
 	return h.AssetServiceHandler.UpdateStatus(ctx, in, out)
+}
+
+func (h *assetServiceHandler) UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error {
+	return h.AssetServiceHandler.UpdateByFilter(ctx, in, out)
 }
