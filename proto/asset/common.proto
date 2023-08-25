@@ -12,6 +12,12 @@ enum ResultStatus {
   Empty = 5;
 }
 
+message PairInt {
+  string key = 1;
+  uint32 value = 2;
+  uint32 count = 3;
+}
+
 message RequestInfo {
   string uid = 1;
   string owner = 2;
@@ -24,6 +30,13 @@ message RequestFilter {
   string value = 3;
   uint32 page = 4;
   uint32 number = 5;
+  string uid = 6;
+}
+
+message RequestList{
+  string uid = 1;
+  string operator = 2;
+  repeated string list = 3;
 }
 
 message ReplyStatus {
@@ -43,4 +56,12 @@ message RequestUpdate{
   string value = 4;
   string operator = 5;
   repeated string values = 6;
+}
+
+message ReplyStatistic {
+  ReplyStatus status = 1;
+  string key = 2;
+  string owner = 3;
+  uint32 count = 4;
+  repeated PairInt list = 10;
 }

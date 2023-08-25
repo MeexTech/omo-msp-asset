@@ -48,6 +48,7 @@ type AssetService interface {
 	UpdateWeight(ctx context.Context, in *ReqAssetWeight, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateStatus(ctx context.Context, in *ReqAssetWeight, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateByFilter(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error)
+	GetStatistic(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyStatistic, error)
 }
 
 type assetService struct {
@@ -202,6 +203,16 @@ func (c *assetService) UpdateByFilter(ctx context.Context, in *RequestUpdate, op
 	return out, nil
 }
 
+func (c *assetService) GetStatistic(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyStatistic, error) {
+	req := c.c.NewRequest(c.name, "AssetService.GetStatistic", in)
+	out := new(ReplyStatistic)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for AssetService service
 
 type AssetServiceHandler interface {
@@ -219,6 +230,7 @@ type AssetServiceHandler interface {
 	UpdateWeight(context.Context, *ReqAssetWeight, *ReplyInfo) error
 	UpdateStatus(context.Context, *ReqAssetWeight, *ReplyInfo) error
 	UpdateByFilter(context.Context, *RequestUpdate, *ReplyInfo) error
+	GetStatistic(context.Context, *RequestFilter, *ReplyStatistic) error
 }
 
 func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts ...server.HandlerOption) error {
@@ -237,6 +249,7 @@ func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts
 		UpdateWeight(ctx context.Context, in *ReqAssetWeight, out *ReplyInfo) error
 		UpdateStatus(ctx context.Context, in *ReqAssetWeight, out *ReplyInfo) error
 		UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error
+		GetStatistic(ctx context.Context, in *RequestFilter, out *ReplyStatistic) error
 	}
 	type AssetService struct {
 		assetService
@@ -303,4 +316,8 @@ func (h *assetServiceHandler) UpdateStatus(ctx context.Context, in *ReqAssetWeig
 
 func (h *assetServiceHandler) UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error {
 	return h.AssetServiceHandler.UpdateByFilter(ctx, in, out)
+}
+
+func (h *assetServiceHandler) GetStatistic(ctx context.Context, in *RequestFilter, out *ReplyStatistic) error {
+	return h.AssetServiceHandler.GetStatistic(ctx, in, out)
 }

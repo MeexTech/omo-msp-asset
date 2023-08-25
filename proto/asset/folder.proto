@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package omo.msp.asset;
+option go_package= "proto/asset";
+import "proto/asset/common.proto";
+
+service FolderService {
+  rpc AddOne(ReqFolderAdd) returns (ReplyFolderInfo) {}
+  rpc UpdateBase(ReqFolderUpdate) returns (ReplyInfo) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+  rpc GetOne(RequestInfo) returns (ReplyFolderInfo) {}
+  rpc Search(RequestInfo) returns (ReplyFolderList) {}
+  rpc GetListBy(RequestFilter) returns (ReplyFolderList) {}
+  rpc GetStatistic(RequestFilter) returns (ReplyStatistic) {}
+  rpc UpdateBy(RequestUpdate) returns (ReplyInfo) {}
+  rpc AppendContents(ReqFolderAppend) returns (ReplyFolderContents) {}
+  rpc SubtractContents(RequestList) returns (ReplyFolderContents) {}
+}
+
+message FolderInfo {
+  string uid = 1;
+  uint64 id = 2;
+  int64 created = 3;
+  int64 updated = 4;
+  string creator = 5;
+  string operator = 6;
+
+  string name = 7;
+  string remark = 8;
+  string owner = 9;
+  string parent = 10;
+  uint32 access = 11;
+  string cover = 12;
+
+  repeated string tags = 21;
+  repeated PairInt contents = 31;
+}
+
+message ReqFolderAdd {
+  string name = 1;
+  string remark = 2;
+  string operator = 3;
+  string owner = 4;
+  string parent = 5;
+  string cover = 6;
+  repeated string tags = 10;
+  repeated PairInt contents = 11;
+}
+
+message ReqFolderUpdate{
+  string uid = 1;
+  string name = 2;
+  string remark = 3;
+  string operator = 4;
+  string parent = 5;
+}
+
+message ReqFolderAppend{
+  string uid = 1;
+  string operator = 2;
+  repeated PairInt contents = 11;
+}
+
+message ReplyFolderContents{
+  ReplyStatus status = 1;
+  string uid = 2;
+  repeated PairInt list = 11;
+}
+
+message ReplyFolderInfo{
+  ReplyStatus status = 1;
+  FolderInfo info = 2;
+}
+
+message ReplyFolderList{
+  ReplyStatus status = 1;
+  repeated FolderInfo list = 2;
+}

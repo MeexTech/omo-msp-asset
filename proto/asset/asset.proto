@@ -19,6 +19,7 @@ service AssetService {
     rpc UpdateWeight(ReqAssetWeight) returns (ReplyInfo){}
     rpc UpdateStatus(ReqAssetWeight) returns (ReplyInfo){}
     rpc UpdateByFilter(RequestUpdate) returns (ReplyInfo){}
+    rpc GetStatistic(RequestFilter) returns (ReplyStatistic) {}
 }
 
 enum OwnerType {
@@ -49,6 +50,7 @@ message AssetInfo {
     string meta = 21;
     uint32 weight = 22;
     uint32 status = 23;
+    string source = 24;
     repeated ThumbBrief thumbs = 19;
     repeated string links = 31;
 }
