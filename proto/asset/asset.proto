@@ -82,6 +82,7 @@ message ReqAssetAdd {
     string small = 14;
     string remark = 16;
     string meta = 17;
+    string quote = 18; //引用的实体对象
     repeated string thumbs = 15;
 }
 
