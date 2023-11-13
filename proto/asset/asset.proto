@@ -51,6 +51,7 @@ message AssetInfo {
     uint32 weight = 22;
     uint32 status = 23;
     string source = 24;
+    string quote = 25;
     repeated ThumbBrief thumbs = 19;
     repeated string links = 31;
 }
