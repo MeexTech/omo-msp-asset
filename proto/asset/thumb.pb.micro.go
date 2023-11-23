@@ -40,6 +40,8 @@ type ThumbService interface {
 	GetList(ctx context.Context, in *ReqThumbList, opts ...client.CallOption) (*ReplyThumbList, error)
 	GetByOwner(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyThumbList, error)
 	UpdateBase(ctx context.Context, in *ReqThumbUpdate, opts ...client.CallOption) (*ReplyThumbOne, error)
+	UpdateByFilter(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error)
+	GetByFilter(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyThumbList, error)
 }
 
 type thumbService struct {
@@ -114,6 +116,26 @@ func (c *thumbService) UpdateBase(ctx context.Context, in *ReqThumbUpdate, opts 
 	return out, nil
 }
 
+func (c *thumbService) UpdateByFilter(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "ThumbService.UpdateByFilter", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *thumbService) GetByFilter(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyThumbList, error) {
+	req := c.c.NewRequest(c.name, "ThumbService.GetByFilter", in)
+	out := new(ReplyThumbList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for ThumbService service
 
 type ThumbServiceHandler interface {
@@ -123,6 +145,8 @@ type ThumbServiceHandler interface {
 	GetList(context.Context, *ReqThumbList, *ReplyThumbList) error
 	GetByOwner(context.Context, *RequestInfo, *ReplyThumbList) error
 	UpdateBase(context.Context, *ReqThumbUpdate, *ReplyThumbOne) error
+	UpdateByFilter(context.Context, *RequestUpdate, *ReplyInfo) error
+	GetByFilter(context.Context, *RequestFilter, *ReplyThumbList) error
 }
 
 func RegisterThumbServiceHandler(s server.Server, hdlr ThumbServiceHandler, opts ...server.HandlerOption) error {
@@ -133,6 +157,8 @@ func RegisterThumbServiceHandler(s server.Server, hdlr ThumbServiceHandler, opts
 		GetList(ctx context.Context, in *ReqThumbList, out *ReplyThumbList) error
 		GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyThumbList) error
 		UpdateBase(ctx context.Context, in *ReqThumbUpdate, out *ReplyThumbOne) error
+		UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error
+		GetByFilter(ctx context.Context, in *RequestFilter, out *ReplyThumbList) error
 	}
 	type ThumbService struct {
 		thumbService
@@ -167,4 +193,12 @@ func (h *thumbServiceHandler) GetByOwner(ctx context.Context, in *RequestInfo, o
 
 func (h *thumbServiceHandler) UpdateBase(ctx context.Context, in *ReqThumbUpdate, out *ReplyThumbOne) error {
 	return h.ThumbServiceHandler.UpdateBase(ctx, in, out)
+}
+
+func (h *thumbServiceHandler) UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error {
+	return h.ThumbServiceHandler.UpdateByFilter(ctx, in, out)
+}
+
+func (h *thumbServiceHandler) GetByFilter(ctx context.Context, in *RequestFilter, out *ReplyThumbList) error {
+	return h.ThumbServiceHandler.GetByFilter(ctx, in, out)
 }

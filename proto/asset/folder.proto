@@ -15,6 +15,8 @@ service FolderService {
   rpc UpdateBy(RequestUpdate) returns (ReplyInfo) {}
   rpc AppendContents(ReqFolderAppend) returns (ReplyFolderContents) {}
   rpc SubtractContents(RequestList) returns (ReplyFolderContents) {}
+  rpc UpdateByFilter(RequestUpdate) returns (ReplyInfo){}
+  rpc GetByFilter(RequestFilter) returns (ReplyFolderList) {}
 }
 
 message FolderInfo {

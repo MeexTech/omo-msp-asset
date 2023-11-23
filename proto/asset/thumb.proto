@@ -11,6 +11,8 @@ service ThumbService {
   rpc GetList(ReqThumbList) returns (ReplyThumbList) {}
   rpc GetByOwner(RequestInfo) returns (ReplyThumbList) {}
   rpc UpdateBase(ReqThumbUpdate) returns (ReplyThumbOne) {}
+  rpc UpdateByFilter(RequestUpdate) returns (ReplyInfo){}
+  rpc GetByFilter(RequestFilter) returns (ReplyThumbList) {}
 }
 
 message ThumbInfo {
@@ -26,6 +28,7 @@ message ThumbInfo {
   string operator = 10;
   float similar = 11;
   float blur = 12;
+  string meta = 13;
 }
 
 message ReqThumbAdd {
@@ -37,6 +40,7 @@ message ReqThumbAdd {
   string operator = 6;
   float similar = 7;
   float blur = 8;
+  string meta = 9;
 }
 
 message ReqThumbUpdate{

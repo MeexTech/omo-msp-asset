@@ -44,6 +44,8 @@ type FolderService interface {
 	UpdateBy(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error)
 	AppendContents(ctx context.Context, in *ReqFolderAppend, opts ...client.CallOption) (*ReplyFolderContents, error)
 	SubtractContents(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyFolderContents, error)
+	UpdateByFilter(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error)
+	GetByFilter(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyFolderList, error)
 }
 
 type folderService struct {
@@ -158,6 +160,26 @@ func (c *folderService) SubtractContents(ctx context.Context, in *RequestList, o
 	return out, nil
 }
 
+func (c *folderService) UpdateByFilter(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "FolderService.UpdateByFilter", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *folderService) GetByFilter(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyFolderList, error) {
+	req := c.c.NewRequest(c.name, "FolderService.GetByFilter", in)
+	out := new(ReplyFolderList)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for FolderService service
 
 type FolderServiceHandler interface {
@@ -171,6 +193,8 @@ type FolderServiceHandler interface {
 	UpdateBy(context.Context, *RequestUpdate, *ReplyInfo) error
 	AppendContents(context.Context, *ReqFolderAppend, *ReplyFolderContents) error
 	SubtractContents(context.Context, *RequestList, *ReplyFolderContents) error
+	UpdateByFilter(context.Context, *RequestUpdate, *ReplyInfo) error
+	GetByFilter(context.Context, *RequestFilter, *ReplyFolderList) error
 }
 
 func RegisterFolderServiceHandler(s server.Server, hdlr FolderServiceHandler, opts ...server.HandlerOption) error {
@@ -185,6 +209,8 @@ func RegisterFolderServiceHandler(s server.Server, hdlr FolderServiceHandler, op
 		UpdateBy(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error
 		AppendContents(ctx context.Context, in *ReqFolderAppend, out *ReplyFolderContents) error
 		SubtractContents(ctx context.Context, in *RequestList, out *ReplyFolderContents) error
+		UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error
+		GetByFilter(ctx context.Context, in *RequestFilter, out *ReplyFolderList) error
 	}
 	type FolderService struct {
 		folderService
@@ -235,4 +261,12 @@ func (h *folderServiceHandler) AppendContents(ctx context.Context, in *ReqFolder
 
 func (h *folderServiceHandler) SubtractContents(ctx context.Context, in *RequestList, out *ReplyFolderContents) error {
 	return h.FolderServiceHandler.SubtractContents(ctx, in, out)
+}
+
+func (h *folderServiceHandler) UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error {
+	return h.FolderServiceHandler.UpdateByFilter(ctx, in, out)
+}
+
+func (h *folderServiceHandler) GetByFilter(ctx context.Context, in *RequestFilter, out *ReplyFolderList) error {
+	return h.FolderServiceHandler.GetByFilter(ctx, in, out)
 }
