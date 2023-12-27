@@ -14,8 +14,9 @@ enum ResultStatus {
 
 message PairInt {
   string key = 1;
-  uint32 value = 2;
+  string value = 2;
   uint32 count = 3;
+  uint32 index = 4;
 }
 
 message RequestInfo {

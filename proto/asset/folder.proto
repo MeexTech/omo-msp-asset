@@ -35,6 +35,7 @@ message FolderInfo {
   string cover = 12;
 
   repeated string tags = 21;
+  repeated string users = 22;
   repeated PairInt contents = 31;
 }
 
@@ -46,7 +47,8 @@ message ReqFolderAdd {
   string parent = 5;
   string cover = 6;
   repeated string tags = 10;
-  repeated PairInt contents = 11;
+  repeated string users = 11;
+  repeated PairInt contents = 12;
 }
 
 message ReqFolderUpdate{
