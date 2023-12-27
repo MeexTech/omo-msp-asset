@@ -9,12 +9,8 @@ service FolderService {
   rpc UpdateBase(ReqFolderUpdate) returns (ReplyInfo) {}
   rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
   rpc GetOne(RequestInfo) returns (ReplyFolderInfo) {}
-  rpc Search(RequestInfo) returns (ReplyFolderList) {}
-  rpc GetListBy(RequestFilter) returns (ReplyFolderList) {}
   rpc GetStatistic(RequestFilter) returns (ReplyStatistic) {}
-  rpc UpdateBy(RequestUpdate) returns (ReplyInfo) {}
-  rpc AppendContents(ReqFolderAppend) returns (ReplyFolderContents) {}
-  rpc SubtractContents(RequestList) returns (ReplyFolderContents) {}
+  rpc UpdateContents(ReqFolderContents) returns (ReplyFolderInfo) {}
   rpc UpdateByFilter(RequestUpdate) returns (ReplyInfo){}
   rpc GetByFilter(RequestFilter) returns (ReplyFolderList) {}
 }
@@ -59,16 +55,10 @@ message ReqFolderUpdate{
   string parent = 5;
 }
 
-message ReqFolderAppend{
+message ReqFolderContents{
   string uid = 1;
   string operator = 2;
   repeated PairInt contents = 11;
-}
-
-message ReplyFolderContents{
-  ReplyStatus status = 1;
-  string uid = 2;
-  repeated PairInt list = 11;
 }
 
 message ReplyFolderInfo{

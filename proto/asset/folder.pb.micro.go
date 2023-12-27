@@ -38,12 +38,8 @@ type FolderService interface {
 	UpdateBase(ctx context.Context, in *ReqFolderUpdate, opts ...client.CallOption) (*ReplyInfo, error)
 	RemoveOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 	GetOne(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyFolderInfo, error)
-	Search(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyFolderList, error)
-	GetListBy(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyFolderList, error)
 	GetStatistic(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyStatistic, error)
-	UpdateBy(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error)
-	AppendContents(ctx context.Context, in *ReqFolderAppend, opts ...client.CallOption) (*ReplyFolderContents, error)
-	SubtractContents(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyFolderContents, error)
+	UpdateContents(ctx context.Context, in *ReqFolderContents, opts ...client.CallOption) (*ReplyFolderInfo, error)
 	UpdateByFilter(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error)
 	GetByFilter(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyFolderList, error)
 }
@@ -100,26 +96,6 @@ func (c *folderService) GetOne(ctx context.Context, in *RequestInfo, opts ...cli
 	return out, nil
 }
 
-func (c *folderService) Search(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyFolderList, error) {
-	req := c.c.NewRequest(c.name, "FolderService.Search", in)
-	out := new(ReplyFolderList)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *folderService) GetListBy(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyFolderList, error) {
-	req := c.c.NewRequest(c.name, "FolderService.GetListBy", in)
-	out := new(ReplyFolderList)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *folderService) GetStatistic(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyStatistic, error) {
 	req := c.c.NewRequest(c.name, "FolderService.GetStatistic", in)
 	out := new(ReplyStatistic)
@@ -130,29 +106,9 @@ func (c *folderService) GetStatistic(ctx context.Context, in *RequestFilter, opt
 	return out, nil
 }
 
-func (c *folderService) UpdateBy(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error) {
-	req := c.c.NewRequest(c.name, "FolderService.UpdateBy", in)
-	out := new(ReplyInfo)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *folderService) AppendContents(ctx context.Context, in *ReqFolderAppend, opts ...client.CallOption) (*ReplyFolderContents, error) {
-	req := c.c.NewRequest(c.name, "FolderService.AppendContents", in)
-	out := new(ReplyFolderContents)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *folderService) SubtractContents(ctx context.Context, in *RequestList, opts ...client.CallOption) (*ReplyFolderContents, error) {
-	req := c.c.NewRequest(c.name, "FolderService.SubtractContents", in)
-	out := new(ReplyFolderContents)
+func (c *folderService) UpdateContents(ctx context.Context, in *ReqFolderContents, opts ...client.CallOption) (*ReplyFolderInfo, error) {
+	req := c.c.NewRequest(c.name, "FolderService.UpdateContents", in)
+	out := new(ReplyFolderInfo)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -187,12 +143,8 @@ type FolderServiceHandler interface {
 	UpdateBase(context.Context, *ReqFolderUpdate, *ReplyInfo) error
 	RemoveOne(context.Context, *RequestInfo, *ReplyInfo) error
 	GetOne(context.Context, *RequestInfo, *ReplyFolderInfo) error
-	Search(context.Context, *RequestInfo, *ReplyFolderList) error
-	GetListBy(context.Context, *RequestFilter, *ReplyFolderList) error
 	GetStatistic(context.Context, *RequestFilter, *ReplyStatistic) error
-	UpdateBy(context.Context, *RequestUpdate, *ReplyInfo) error
-	AppendContents(context.Context, *ReqFolderAppend, *ReplyFolderContents) error
-	SubtractContents(context.Context, *RequestList, *ReplyFolderContents) error
+	UpdateContents(context.Context, *ReqFolderContents, *ReplyFolderInfo) error
 	UpdateByFilter(context.Context, *RequestUpdate, *ReplyInfo) error
 	GetByFilter(context.Context, *RequestFilter, *ReplyFolderList) error
 }
@@ -203,12 +155,8 @@ func RegisterFolderServiceHandler(s server.Server, hdlr FolderServiceHandler, op
 		UpdateBase(ctx context.Context, in *ReqFolderUpdate, out *ReplyInfo) error
 		RemoveOne(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 		GetOne(ctx context.Context, in *RequestInfo, out *ReplyFolderInfo) error
-		Search(ctx context.Context, in *RequestInfo, out *ReplyFolderList) error
-		GetListBy(ctx context.Context, in *RequestFilter, out *ReplyFolderList) error
 		GetStatistic(ctx context.Context, in *RequestFilter, out *ReplyStatistic) error
-		UpdateBy(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error
-		AppendContents(ctx context.Context, in *ReqFolderAppend, out *ReplyFolderContents) error
-		SubtractContents(ctx context.Context, in *RequestList, out *ReplyFolderContents) error
+		UpdateContents(ctx context.Context, in *ReqFolderContents, out *ReplyFolderInfo) error
 		UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error
 		GetByFilter(ctx context.Context, in *RequestFilter, out *ReplyFolderList) error
 	}
@@ -239,28 +187,12 @@ func (h *folderServiceHandler) GetOne(ctx context.Context, in *RequestInfo, out 
 	return h.FolderServiceHandler.GetOne(ctx, in, out)
 }
 
-func (h *folderServiceHandler) Search(ctx context.Context, in *RequestInfo, out *ReplyFolderList) error {
-	return h.FolderServiceHandler.Search(ctx, in, out)
-}
-
-func (h *folderServiceHandler) GetListBy(ctx context.Context, in *RequestFilter, out *ReplyFolderList) error {
-	return h.FolderServiceHandler.GetListBy(ctx, in, out)
-}
-
 func (h *folderServiceHandler) GetStatistic(ctx context.Context, in *RequestFilter, out *ReplyStatistic) error {
 	return h.FolderServiceHandler.GetStatistic(ctx, in, out)
 }
 
-func (h *folderServiceHandler) UpdateBy(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error {
-	return h.FolderServiceHandler.UpdateBy(ctx, in, out)
-}
-
-func (h *folderServiceHandler) AppendContents(ctx context.Context, in *ReqFolderAppend, out *ReplyFolderContents) error {
-	return h.FolderServiceHandler.AppendContents(ctx, in, out)
-}
-
-func (h *folderServiceHandler) SubtractContents(ctx context.Context, in *RequestList, out *ReplyFolderContents) error {
-	return h.FolderServiceHandler.SubtractContents(ctx, in, out)
+func (h *folderServiceHandler) UpdateContents(ctx context.Context, in *ReqFolderContents, out *ReplyFolderInfo) error {
+	return h.FolderServiceHandler.UpdateContents(ctx, in, out)
 }
 
 func (h *folderServiceHandler) UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error {
