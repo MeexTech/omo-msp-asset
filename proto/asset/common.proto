@@ -12,7 +12,7 @@ enum ResultStatus {
   Empty = 5;
 }
 
-message PairInt {
+message PairInfo {
   string key = 1;
   string value = 2;
   uint32 count = 3;
@@ -67,5 +67,5 @@ message ReplyStatistic {
   string key = 2;
   string owner = 3;
   uint32 count = 4;
-  repeated PairInt list = 10;
+  repeated PairInfo list = 10;
 }
