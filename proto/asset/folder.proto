@@ -30,6 +30,7 @@ message FolderInfo {
   uint32 access = 11;
   string cover = 12;
   uint32 type = 13;
+  uint32 count = 14;
 
   repeated string tags = 21;
   repeated string users = 22;
