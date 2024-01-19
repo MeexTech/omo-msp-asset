@@ -43,6 +43,7 @@ message ReqFolderAdd {
   string owner = 4;
   string parent = 5;
   string cover = 6;
+  uint32 type = 7;
   repeated string tags = 10;
   repeated string users = 11;
   repeated PairInfo contents = 12;
@@ -54,6 +55,7 @@ message ReqFolderUpdate{
   string remark = 3;
   string operator = 4;
   string parent = 5;
+  uint32 type = 6;
 }
 
 message ReqFolderContents{
