@@ -130,4 +130,6 @@ message ReplyAssetToken {
     uint32 expire = 4;
     string bucket = 5;
     string token = 6;
+    string access = 7;
+    string secret = 8;
 }
