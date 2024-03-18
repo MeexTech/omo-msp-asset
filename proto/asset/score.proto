@@ -1,3 +1,50 @@
 syntax = "proto3";
 
-package template;
+package omo.msp.asset;
+option go_package= "proto/asset";
+import "proto/asset/common.proto";
+
+service ScoreService {
+  rpc AddOne(ReqScoreAdd) returns (ReplyScoreInfo) {}
+  rpc GetOne(RequestInfo) returns (ReplyScoreInfo) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+  rpc GetByOwner(RequestInfo) returns (ReplyScoreList) {}
+  rpc UpdateByFilter(RequestUpdate) returns (ReplyInfo){}
+  rpc GetByFilter(RequestFilter) returns (ReplyScoreList) {}
+}
+
+message ScoreInfo {
+  string uid = 1;
+  int64 created = 2;
+  int64 updated = 3;
+  string creator = 4;
+  string operator = 5;
+  string name = 6;
+  string scene = 7;
+  string entity = 8;
+  repeated ScorePair list = 21;
+}
+
+message ScorePair {
+  uint32 type = 1;
+  uint32 count = 2;
+}
+
+message ReqScoreAdd{
+  string name = 1;
+  string scene = 2;
+  string entity = 3;
+  string operator = 4;
+  uint32 count = 5;
+  uint32 type = 6;
+}
+
+message ReplyScoreInfo{
+  ReplyStatus status = 1;
+  ScoreInfo info = 2;
+}
+
+message ReplyScoreList{
+  ReplyStatus status = 1;
+  repeated ScoreInfo list = 2;
+}
