@@ -11,6 +11,7 @@ service ScoreService {
   rpc GetByOwner(RequestInfo) returns (ReplyScoreList) {}
   rpc UpdateByFilter(RequestUpdate) returns (ReplyInfo){}
   rpc GetByFilter(RequestFilter) returns (ReplyScoreList) {}
+  rpc GetStatistic(RequestFilter) returns (ReplyStatistic) {}
 }
 
 message ScoreInfo {
@@ -22,6 +23,7 @@ message ScoreInfo {
   string name = 6;
   string scene = 7;
   string entity = 8;
+  uint32 type = 9;
   repeated ScorePair list = 21;
 }
 
@@ -35,8 +37,9 @@ message ReqScoreAdd{
   string scene = 2;
   string entity = 3;
   string operator = 4;
-  uint32 count = 5;
-  uint32 type = 6;
+  uint32 kind = 5;
+  uint32 count = 6;
+  uint32 type = 7;
 }
 
 message ReplyScoreInfo{

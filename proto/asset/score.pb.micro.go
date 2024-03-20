@@ -40,6 +40,7 @@ type ScoreService interface {
 	GetByOwner(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyScoreList, error)
 	UpdateByFilter(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error)
 	GetByFilter(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyScoreList, error)
+	GetStatistic(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyStatistic, error)
 }
 
 type scoreService struct {
@@ -114,6 +115,16 @@ func (c *scoreService) GetByFilter(ctx context.Context, in *RequestFilter, opts 
 	return out, nil
 }
 
+func (c *scoreService) GetStatistic(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyStatistic, error) {
+	req := c.c.NewRequest(c.name, "ScoreService.GetStatistic", in)
+	out := new(ReplyStatistic)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for ScoreService service
 
 type ScoreServiceHandler interface {
@@ -123,6 +134,7 @@ type ScoreServiceHandler interface {
 	GetByOwner(context.Context, *RequestInfo, *ReplyScoreList) error
 	UpdateByFilter(context.Context, *RequestUpdate, *ReplyInfo) error
 	GetByFilter(context.Context, *RequestFilter, *ReplyScoreList) error
+	GetStatistic(context.Context, *RequestFilter, *ReplyStatistic) error
 }
 
 func RegisterScoreServiceHandler(s server.Server, hdlr ScoreServiceHandler, opts ...server.HandlerOption) error {
@@ -133,6 +145,7 @@ func RegisterScoreServiceHandler(s server.Server, hdlr ScoreServiceHandler, opts
 		GetByOwner(ctx context.Context, in *RequestInfo, out *ReplyScoreList) error
 		UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error
 		GetByFilter(ctx context.Context, in *RequestFilter, out *ReplyScoreList) error
+		GetStatistic(ctx context.Context, in *RequestFilter, out *ReplyStatistic) error
 	}
 	type ScoreService struct {
 		scoreService
@@ -167,4 +180,8 @@ func (h *scoreServiceHandler) UpdateByFilter(ctx context.Context, in *RequestUpd
 
 func (h *scoreServiceHandler) GetByFilter(ctx context.Context, in *RequestFilter, out *ReplyScoreList) error {
 	return h.ScoreServiceHandler.GetByFilter(ctx, in, out)
+}
+
+func (h *scoreServiceHandler) GetStatistic(ctx context.Context, in *RequestFilter, out *ReplyStatistic) error {
+	return h.ScoreServiceHandler.GetStatistic(ctx, in, out)
 }
