@@ -24,6 +24,7 @@ message ScoreInfo {
   string scene = 7;
   string entity = 8;
   uint32 type = 9;
+  uint64 total = 10;
   repeated ScorePair list = 21;
 }
 
