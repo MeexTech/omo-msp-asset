@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package omo.msp.asset;
+option go_package= "proto/asset";
+import "proto/asset/common.proto";
+
+service LabelService {
+  rpc AddOne(ReqLabelAdd) returns (ReplyLabelInfo) {}
+  rpc GetOne(RequestInfo) returns (ReplyLabelInfo) {}
+  rpc RemoveOne(RequestInfo) returns (ReplyInfo) {}
+  rpc UpdateByFilter(RequestUpdate) returns (ReplyInfo){}
+  rpc GetByFilter(RequestFilter) returns (ReplyLabelList) {}
+  rpc GetStatistic(RequestFilter) returns (ReplyStatistic) {}
+}
+
+message LabelInfo {
+  string uid = 1;
+  int64 created = 2;
+  int64 updated = 3;
+  string creator = 4;
+  string operator = 5;
+  string name = 6;
+  string scene = 7;
+  string remark = 8;
+  uint32 type = 9;
+}
+
+message ReqLabelAdd{
+  string name = 1;
+  string scene = 2;
+  string remark = 3;
+  string operator = 4;
+  uint32 type = 5;
+}
+
+message ReplyLabelInfo{
+  ReplyStatus status = 1;
+  LabelInfo info = 2;
+}
+
+message ReplyLabelList{
+  ReplyStatus status = 1;
+  repeated LabelInfo list = 2;
+}
