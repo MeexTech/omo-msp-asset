@@ -55,6 +55,7 @@ message AssetInfo {
     uint32 scope = 26;
     repeated ThumbBrief thumbs = 19;
     repeated string links = 31;
+    repeated string tags = 32;
 }
 
 message ThumbBrief {
@@ -87,6 +88,7 @@ message ReqAssetAdd {
     string quote = 18; //引用的实体对象
     uint32 scope = 19;
     repeated string thumbs = 15;
+    repeated string tags = 21;
 }
 
 message ReqAssetFlag{
