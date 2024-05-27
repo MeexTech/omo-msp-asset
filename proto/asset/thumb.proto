@@ -29,6 +29,8 @@ message ThumbInfo {
   float similar = 11;
   float blur = 12;
   string meta = 13;
+  string quote = 14;
+  string user = 15;
 }
 
 message ReqThumbAdd {
@@ -41,6 +43,8 @@ message ReqThumbAdd {
   float similar = 7;
   float blur = 8;
   string meta = 9;
+  string quote = 10;
+  string user = 11;
 }
 
 message ReqThumbUpdate{
