@@ -53,6 +53,8 @@ message AssetInfo {
     string source = 24;
     string quote = 25;
     uint32 scope = 26;
+    string sSmall = 27;
+    string sBig = 28;
     repeated ThumbBrief thumbs = 19;
     repeated string links = 31;
     repeated string tags = 32;
