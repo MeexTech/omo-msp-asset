@@ -49,6 +49,7 @@ type AssetService interface {
 	UpdateStatus(ctx context.Context, in *ReqAssetWeight, opts ...client.CallOption) (*ReplyInfo, error)
 	UpdateByFilter(ctx context.Context, in *RequestUpdate, opts ...client.CallOption) (*ReplyInfo, error)
 	GetStatistic(ctx context.Context, in *RequestFilter, opts ...client.CallOption) (*ReplyStatistic, error)
+	CheckSensitive(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error)
 }
 
 type assetService struct {
@@ -213,6 +214,16 @@ func (c *assetService) GetStatistic(ctx context.Context, in *RequestFilter, opts
 	return out, nil
 }
 
+func (c *assetService) CheckSensitive(ctx context.Context, in *RequestInfo, opts ...client.CallOption) (*ReplyInfo, error) {
+	req := c.c.NewRequest(c.name, "AssetService.CheckSensitive", in)
+	out := new(ReplyInfo)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for AssetService service
 
 type AssetServiceHandler interface {
@@ -231,6 +242,7 @@ type AssetServiceHandler interface {
 	UpdateStatus(context.Context, *ReqAssetWeight, *ReplyInfo) error
 	UpdateByFilter(context.Context, *RequestUpdate, *ReplyInfo) error
 	GetStatistic(context.Context, *RequestFilter, *ReplyStatistic) error
+	CheckSensitive(context.Context, *RequestInfo, *ReplyInfo) error
 }
 
 func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts ...server.HandlerOption) error {
@@ -250,6 +262,7 @@ func RegisterAssetServiceHandler(s server.Server, hdlr AssetServiceHandler, opts
 		UpdateStatus(ctx context.Context, in *ReqAssetWeight, out *ReplyInfo) error
 		UpdateByFilter(ctx context.Context, in *RequestUpdate, out *ReplyInfo) error
 		GetStatistic(ctx context.Context, in *RequestFilter, out *ReplyStatistic) error
+		CheckSensitive(ctx context.Context, in *RequestInfo, out *ReplyInfo) error
 	}
 	type AssetService struct {
 		assetService
@@ -320,4 +333,8 @@ func (h *assetServiceHandler) UpdateByFilter(ctx context.Context, in *RequestUpd
 
 func (h *assetServiceHandler) GetStatistic(ctx context.Context, in *RequestFilter, out *ReplyStatistic) error {
 	return h.AssetServiceHandler.GetStatistic(ctx, in, out)
+}
+
+func (h *assetServiceHandler) CheckSensitive(ctx context.Context, in *RequestInfo, out *ReplyInfo) error {
+	return h.AssetServiceHandler.CheckSensitive(ctx, in, out)
 }

@@ -51,6 +51,7 @@ message ReplyStatus {
 message ReplyInfo {
   string uid = 1;
   ReplyStatus status = 2;
+  uint32 result = 3;
 }
 
 message RequestUpdate{

@@ -20,6 +20,7 @@ service AssetService {
     rpc UpdateStatus(ReqAssetWeight) returns (ReplyInfo){}
     rpc UpdateByFilter(RequestUpdate) returns (ReplyInfo){}
     rpc GetStatistic(RequestFilter) returns (ReplyStatistic) {}
+    rpc CheckSensitive(RequestInfo) returns (ReplyInfo) {}
 }
 
 enum OwnerType {
@@ -89,6 +90,7 @@ message ReqAssetAdd {
     string meta = 17;
     string quote = 18; //引用的实体对象
     uint32 scope = 19;
+    uint32 check = 20; //是否自动检测
     repeated string thumbs = 15;
     repeated string tags = 21;
 }
