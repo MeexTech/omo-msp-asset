@@ -34,6 +34,7 @@ message FolderInfo {
 
   repeated string tags = 21;
   repeated string users = 22;
+  repeated string scenes = 23;
   repeated PairInfo contents = 31;
 }
 
@@ -48,6 +49,7 @@ message ReqFolderAdd {
   repeated string tags = 10;
   repeated string users = 11;
   repeated PairInfo contents = 12;
+  repeated string scenes = 15;
 }
 
 message ReqFolderUpdate{
